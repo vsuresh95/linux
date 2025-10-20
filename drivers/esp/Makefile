@@ -1,0 +1,1 @@
+obj-$(CONFIG_VIRTUAL_ACCELERATORS) += contig_alloc.o

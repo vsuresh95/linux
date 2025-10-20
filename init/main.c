@@ -99,6 +99,10 @@
 #include <asm/sections.h>
 #include <asm/cacheflush.h>
 
+#ifdef CONFIG_VIRTUAL_ACCELERATORS
+#include <linux/esp/contig_alloc.h>
+#endif
+
 #define CREATE_TRACE_POINTS
 #include <trace/events/initcall.h>
 
@@ -993,6 +997,10 @@ static void __init do_basic_setup(void)
 	do_ctors();
 	usermodehelper_enable();
 	do_initcalls();
+
+#ifdef CONFIG_VIRTUAL_ACCELERATORS
+	contig_init();
+#endif
 }
 
 static void __init do_pre_smp_initcalls(void)

@@ -1,0 +1,5 @@
+config VIRTUAL_ACCELERATORS
+    bool "Virtual Accelerator support"
+    depends on RISCV
+    default y
+# TODO: add help text and other comments/options as needed
