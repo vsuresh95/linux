@@ -1,1 +1,3 @@
 obj-$(CONFIG_VIRTUAL_ACCELERATORS) += contig_alloc.o
+obj-$(CONFIG_VIRTUAL_ACCELERATORS) += esp_cache.o
+obj-$(CONFIG_VIRTUAL_ACCELERATORS) += esp.o

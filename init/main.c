@@ -9,6 +9,7 @@
  *  Simplified starting of init:  Michael A. Griffith <grif@acm.org>
  */
 
+#include "linux/esp/esp_cache.h"
 #define DEBUG		/* Enable initcall_debug */
 
 #include <linux/types.h>
@@ -101,6 +102,7 @@
 
 #ifdef CONFIG_VIRTUAL_ACCELERATORS
 #include <linux/esp/contig_alloc.h>
+#include <linux/esp/esp.h>
 #endif
 
 #define CREATE_TRACE_POINTS
@@ -1000,6 +1002,9 @@ static void __init do_basic_setup(void)
 
 #ifdef CONFIG_VIRTUAL_ACCELERATORS
 	contig_init();
+	esp_cache_init();
+	esp_private_cache_init();
+	esp_init();
 #endif
 }
 
