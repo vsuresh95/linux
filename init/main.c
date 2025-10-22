@@ -103,6 +103,7 @@
 #ifdef CONFIG_VIRTUAL_ACCELERATORS
 #include <linux/esp/contig_alloc.h>
 #include <linux/esp/esp.h>
+#include <linux/esp/mac.h>
 #endif
 
 #define CREATE_TRACE_POINTS
@@ -1005,6 +1006,7 @@ static void __init do_basic_setup(void)
 	esp_cache_init();
 	esp_private_cache_init();
 	esp_init();
+	mac_init();
 #endif
 }
 
