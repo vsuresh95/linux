@@ -15,7 +15,6 @@
  * - llc_banks
  */
 
-#include "linux/printk.h"
 #include <linux/platform_device.h>
 #include <linux/of_device.h>
 #include <linux/of_platform.h>
@@ -69,8 +68,6 @@ static irqreturn_t esp_irq(int irq, void *dev)
 	status = ioread32be(esp->iomem + STATUS_REG);
 	error = status & STATUS_MASK_ERR;
 	done = status & STATUS_MASK_DONE;
-
-	/* printk(KERN_INFO "IRQ: %08x\n", status); */
 
 	if (error) {
 		iowrite32be(0, esp->iomem + CMD_REG);
@@ -470,12 +467,6 @@ static long esp_do_ioctl(struct file *file, unsigned int cm, void __user *arg)
 {
 	struct esp_device *esp = file->private_data;
 
-	printk("esp ioctl commands:\n");
-	printk("ESP_IOC_RUN = 0x%x", ESP_IOC_RUN);
-	printk("ESP_IOC_FLUSH = 0x%x", ESP_IOC_FLUSH);
-	printk("esp->driver->ioctl_cm = 0x%x", esp->driver->ioctl_cm);
-	printk("Received commands: 0x%x", cm);
-
 	switch (cm) {
 	case ESP_IOC_RUN:
 		return esp_run_ioctl(esp);
@@ -507,7 +498,6 @@ static int esp_create_cdev(struct esp_device *esp, int ndev)
 	int rc;
 
 	cdev_init(&esp->cdev, &esp_fops);
-	printk("ESP registered operations: 0x%llx\n", (unsigned long long)&esp_fops);
 	esp->cdev.owner = esp->module;
 	rc = cdev_add(&esp->cdev, devno, 1);
 	if (rc) {
@@ -675,8 +665,7 @@ EXPORT_SYMBOL_GPL(esp_driver_unregister);
 
 int esp_init(void)
 {
-	printk("esp_init() from kernel boot\n");
-        esp_status_init();
+	esp_status_init();
 	return 0;
 }
 

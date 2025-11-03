@@ -4,7 +4,6 @@
  */
 
 #include <linux/esp/esp_cache.h>
-#include <linux/printk.h>
 
 #define DRV_NAME	"lastlevel_cache"
 
@@ -159,7 +158,6 @@ static struct platform_driver esp_cache_driver = {
 int esp_cache_init(void)
 {
 	int rc;
-	printk("esp_cache_init(); from kernel boot\n");
 	rc = platform_driver_register(&esp_cache_driver);
 	return rc;
 }
@@ -372,11 +370,7 @@ static struct platform_driver esp_private_cache_driver = {
 
 int __init esp_private_cache_init(void)
 {
-	int rc;
-
-    printk("esp_private_cache() from kernel boot;\n");
-
-    rc = platform_driver_register(&esp_private_cache_driver);
+	int rc = platform_driver_register(&esp_private_cache_driver);
 	return rc;
 }
 

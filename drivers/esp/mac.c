@@ -116,7 +116,6 @@ static struct esp_driver mac_driver = {
 
 int __init mac_init(void)
 {
-	printk("mac_init\n");
 	return esp_driver_register(&mac_driver);
 }
 

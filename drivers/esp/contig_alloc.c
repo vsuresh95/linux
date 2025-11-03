@@ -619,9 +619,7 @@ static int contig_mmap(struct file *file, struct vm_area_struct *vma)
 
 static int contig_create_file(void)
 {
-    printk(KERN_INFO "Creating contig_alloc device file\n");
 	contig_class = class_create(THIS_MODULE, "contig_alloc");
-    printk(KERN_INFO "contig_class=0x%llx\n", (uint64_t)contig_class);
 	if (IS_ERR(contig_class))
 		return PTR_ERR(contig_class);
 
@@ -634,10 +632,8 @@ static int contig_create_file(void)
 	return 0;
 
  err_device_create:
-    printk(KERN_ERR "Failed to create contig_alloc device\n");
 	unregister_chrdev(CONTIG_MAJOR, "contig_alloc");
  err_chrdev:
-	printk(KERN_ERR "Failed to create contig_alloc device file\n");
 	class_destroy(contig_class);
 	return -ENODEV;
 }
@@ -653,12 +649,9 @@ int contig_init(void) {
     int i;
     int rc;
 
-    printk(KERN_INFO "Initializing contig_alloc from kernel boot\n");
     if (contig_chunk_size_log >= 32)
 		return -EINVAL;
-    printk(KERN_INFO "contig_chunk_size_log=%lu\n", contig_chunk_size_log);
 	chunk_size = BIT(contig_chunk_size_log);
-    printk(KERN_INFO "chunk_size=%lu\n", chunk_size);
 
 #ifndef CONFIG_BIGPHYS_AREA
 	if (!mem_start[0])
@@ -676,9 +669,7 @@ int contig_init(void) {
 			pr_warn(PFX "chunk_size (0x%lx) does not divide evenly mem_size[%d] (0x%lx); discarding %ld bytes\n",
 				chunk_size, i, mem_size[i], mem_size[i] % chunk_size);
 			mem_size[i] -= mem_size[i] % chunk_size;
-		} else {
-            printk(KERN_INFO "mem_size[%d]=0x%lx\n", i, mem_size[i]);
-        }
+		}
 		if (!mem_size[i] || !chunk_size)
 			return -EINVAL;
 		if (chunk_size > mem_size[i]) {
