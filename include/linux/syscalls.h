@@ -1392,12 +1392,14 @@ static inline unsigned int ksys_personality(unsigned int personality)
 
 #if defined(CONFIG_VIRTUAL_ACCELERATORS) && CONFIG_VIRTUAL_ACCELERATORS == 1
 
+#include <linux/esp/esp.h>
+
 /**
  * @brief initiates a task running on the accelerator
  * 
  * @return (same as clone, but meaningless temporarily)
  */
-asmlinkage long sys_clone_accel(void);
+asmlinkage long sys_clone_accel(struct esp_access *accel_info);
 
 #endif
 

@@ -35,7 +35,8 @@
 #define ESP_MAX_DEVICES	64
 
 static DEFINE_SPINLOCK(esp_devices_lock);
-static LIST_HEAD(esp_devices);
+// static LIST_HEAD(esp_devices);
+LIST_HEAD(esp_devices);
 
 /* These are overwritten whith insmod flags */
 static unsigned long cache_line_bytes = 16;
@@ -83,7 +84,7 @@ static irqreturn_t esp_irq(int irq, void *dev)
 	return IRQ_NONE;
 }
 
-static int esp_flush(struct esp_device *esp)
+int esp_flush(struct esp_device *esp)
 {
 	int rc = 0;
 	if (esp->coherence < ACC_COH_RECALL)
@@ -136,7 +137,7 @@ void esp_status_init(void) {
 		esp_status.active_footprint_split[i] = 0;
 }
 
-static void esp_runtime_config(struct esp_device *esp)
+void esp_runtime_config(struct esp_device *esp)
 {
 	unsigned int footprint, footprint_llc_threshold;
 	// Update number of active accelerators
@@ -205,7 +206,7 @@ static void esp_runtime_config(struct esp_device *esp)
 	return;
 }
 
-static void esp_transfer(struct esp_device *esp, const struct contig_desc *contig)
+void esp_transfer(struct esp_device *esp, const struct contig_desc *contig)
 {
 	esp->err = 0;
 	reinit_completion(&esp->completion);
@@ -218,12 +219,12 @@ static void esp_transfer(struct esp_device *esp, const struct contig_desc *conti
 	iowrite32be(0x0, esp->iomem + DST_OFFSET_REG);
 }
 
-static void esp_run(struct esp_device *esp)
+void esp_run(struct esp_device *esp)
 {
 	iowrite32be(0x1, esp->iomem + CMD_REG);
 }
 
-static int esp_wait(struct esp_device *esp)
+int esp_wait(struct esp_device *esp)
 {
 	/* Interrupt */
 	int wait;
@@ -239,7 +240,7 @@ static int esp_wait(struct esp_device *esp)
 	return 0;
 }
 
-static void esp_update_status(struct esp_device *esp)
+void esp_update_status(struct esp_device *esp)
 {
 	if (esp->coherence == ACC_COH_FULL)
 		esp_status.active_acc_cnt_full--;
@@ -267,7 +268,7 @@ static void esp_update_status(struct esp_device *esp)
 	}
 }
 
-static bool esp_xfer_input_ok(struct esp_device *esp, const struct contig_desc *contig)
+bool esp_xfer_input_ok(struct esp_device *esp, const struct contig_desc *contig)
 {
 	unsigned nchunk_max = ioread32be(esp->iomem + PT_NCHUNK_MAX_REG);
 
@@ -314,7 +315,7 @@ static long esp_p2p_set_src(struct esp_device *esp, char *src_name, int src_inde
 	return false;
 }
 
-static long esp_p2p_init(struct esp_device *esp, struct esp_access *access)
+long esp_p2p_init(struct esp_device *esp, struct esp_access *access)
 {
 	int i = 0;
 
