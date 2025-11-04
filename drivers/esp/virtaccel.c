@@ -55,7 +55,7 @@ SYSCALL_DEFINE1(clone_accel, struct esp_access *, accel_info_user) {
         }
     }
     if (unlikely(!dev)) {
-        printk(KERN_ERR "clone_accel: cannot find %s device\n", accel_name);
+        // printk(KERN_ERR "clone_accel: cannot find %s device\n", accel_name);
         return -ENODEV;
     }
     // }
